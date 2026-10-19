@@ -24,9 +24,34 @@ fi
 nvim_is_recent() {
   have nvim || return 1
   local version major minor
-  version="$(nvim --version | head -n1 | sed -E 's/^NVIM v([0-9]+)\.([0-9]+).*/\1 \2/')"
-  read -r major minor <<<"$version"
+  version="$(nvim --version 2>/dev/null | head -n1)" || return 1
+  [[ "$version" =~ ^NVIM\ v([0-9]+)\.([0-9]+) ]] || return 1
+  major="${BASH_REMATCH[1]}"
+  minor="${BASH_REMATCH[2]}"
   [ "$major" -gt 0 ] || [ "$minor" -ge 11 ]
+}
+
+is_musl() {
+  [ -f /etc/alpine-release ] || { have ldd && ldd --version 2>&1 | grep -qi musl; }
+}
+
+# Remove a previously downloaded Neovim that can't run here (e.g. glibc build on musl).
+remove_broken_local_nvim() {
+  local bin="$HOME/.local/bin/nvim"
+  if [ -L "$bin" ] && ! "$bin" --version >/dev/null 2>&1; then
+    log "Removing non-working Neovim at $bin"
+    rm -f "$bin"
+    rm -rf "$HOME/.local/opt/nvim"
+  fi
+}
+
+# Some base images ship a ~/.zprofile that sources a missing ~/.profile.
+ensure_profile() {
+  if [ -f "$HOME/.zprofile" ] && [ ! -e "$HOME/.profile" ] \
+    && grep -q '\.profile' "$HOME/.zprofile"; then
+    log "Creating empty ~/.profile (sourced by ~/.zprofile)"
+    touch "$HOME/.profile"
+  fi
 }
 
 node_available() {
@@ -49,6 +74,20 @@ install_packages() {
     log "Installing ${pkgs[*]}"
     $SUDO apt-get update -qq
     $SUDO env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends "${pkgs[@]}"
+  elif [ "$OS" = "Linux" ] && have apk; then
+    have zsh || pkgs+=(zsh)
+    have git || pkgs+=(git)
+    have curl || pkgs+=(curl)
+    have rg || pkgs+=(ripgrep)
+    node_available || pkgs+=(nodejs npm)
+    nvim_is_recent || pkgs+=(neovim)
+    [ "${#pkgs[@]}" -eq 0 ] && return
+    if ! $CAN_ROOT; then
+      warn "cannot install ${pkgs[*]} without root/sudo; install them manually"
+      return
+    fi
+    log "Installing ${pkgs[*]}"
+    $SUDO apk add --no-cache --quiet "${pkgs[@]}"
   elif [ "$OS" = "Darwin" ] && have brew; then
     have rg || pkgs+=(ripgrep)
     node_available || pkgs+=(node)
@@ -63,6 +102,10 @@ install_packages() {
 
 install_neovim_linux() {
   nvim_is_recent && return
+  if is_musl; then
+    warn "Neovim >= 0.11 not available; GitHub release builds need glibc, so install it with your package manager"
+    return
+  fi
   local arch
   case "$(uname -m)" in
     x86_64 | amd64) arch="x86_64" ;;
@@ -123,9 +166,11 @@ install_nvim_plugins() {
     || warn "Neovim plugin install reported errors; open nvim and run :Lazy"
 }
 
+remove_broken_local_nvim
 install_packages
 [ "$OS" = "Linux" ] && install_neovim_linux
 install_oh_my_zsh
+ensure_profile
 link .zshrc
 link .zsh-custom
 link .config/nvim

@@ -10,7 +10,7 @@ cd martok-dots && ./install.sh
 
 `install.sh` is idempotent. It:
 
-- installs missing dependencies (zsh, git, curl, ripgrep, Node.js; Neovim >= 0.11 from GitHub releases on Linux, Homebrew on macOS)
+- installs missing dependencies (zsh, git, curl, ripgrep, Node.js, Neovim >= 0.11) via apt (Neovim from GitHub releases), apk (Alpine), or Homebrew (macOS)
 - installs Oh My Zsh to `~/.oh-my-zsh` if absent
 - symlinks `.zshrc`, `.zsh-custom` (custom `agnoster` theme), and `.config/nvim` into `$HOME`, backing up existing files to `~/.dotfiles-backup/`
 - on Linux, sets zsh as the login shell when sudo is available
