@@ -1,0 +1,35 @@
+!_TAG_FILE_ENCODING	utf-8	//
+blame.nvim-activating-additional-blame-options	blame.nvim.md	/### Activating additional blame options
+blame.nvim-advanced	blame.nvim.md	/## Advanced
+blame.nvim-blame-nvim	blame.nvim.md	/# 🫵 blame.nvim
+blame.nvim-blame-stack	blame.nvim.md	/####  Blame stack
+blame.nvim-commit-info	blame.nvim.md	/#### Commit info
+blame.nvim-configuration	blame.nvim.md	/## Configuration
+blame.nvim-copy-commit-hash	blame.nvim.md	/#### Copy commit hash
+blame.nvim-custom-format-function	blame.nvim.md	/### Custom format function
+blame.nvim-custom-views	blame.nvim.md	/### Custom views
+blame.nvim-events	blame.nvim.md	/### Events
+blame.nvim-features	blame.nvim.md	/### Features
+blame.nvim-full-commit-info	blame.nvim.md	/#### Full commit info
+blame.nvim-installation	blame.nvim.md	/## Installation
+blame.nvim-open-commit-in-browser	blame.nvim.md	/#### Open commit in browser
+blame.nvim-usage	blame.nvim.md	/## Usage
+nvim-web-devicons-additional-icons	nvim-web-devicons.md	/## Additional Icons
+nvim-web-devicons-case-sensitivity	nvim-web-devicons.md	/### Case Sensitivity
+nvim-web-devicons-contributing	nvim-web-devicons.md	/## Contributing
+nvim-web-devicons-get-all-icons	nvim-web-devicons.md	/### Get all icons
+nvim-web-devicons-get-icon	nvim-web-devicons.md	/### Get Icon
+nvim-web-devicons-get-icon-and-color-code	nvim-web-devicons.md	/### Get icon and color code
+nvim-web-devicons-getting-and-setting-icons-by-filetype	nvim-web-devicons.md	/### Getting and setting icons by filetype
+nvim-web-devicons-installation	nvim-web-devicons.md	/## Installation
+nvim-web-devicons-known-issues	nvim-web-devicons.md	/## Known Issues
+nvim-web-devicons-my-setup-overrides-are-not-applied	nvim-web-devicons.md	/### My `setup` Overrides Are Not Applied
+nvim-web-devicons-nvim-web-devicons	nvim-web-devicons.md	/# Nvim-web-devicons
+nvim-web-devicons-requirements	nvim-web-devicons.md	/## Requirements
+nvim-web-devicons-set-an-icon	nvim-web-devicons.md	/### Set an icon
+nvim-web-devicons-setup	nvim-web-devicons.md	/### Setup
+nvim-web-devicons-usage	nvim-web-devicons.md	/## Usage
+nvim-web-devicons-variants	nvim-web-devicons.md	/### Variants
+nvim-web-devicons-viewing	nvim-web-devicons.md	/### Viewing
+nvim-web-devicons-vim-pack-https-neovim-io-doc-user-pack-html-vim-pack-neovim-0-12-native-plugin-manager	nvim-web-devicons.md	/### \[vim.pack\](https:\/\/neovim.io\/doc\/user\/pack.html#vim.pack) - Neovim 0.12+ Native Plugin Manager
+nvim-web-devicons-windows-and-wsl-not-rendering-icons-properly-on-some-terminals	nvim-web-devicons.md	/### Windows and WSL not rendering icons properly on some terminals
