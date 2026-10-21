@@ -65,6 +65,7 @@ install_packages() {
     have git || pkgs+=(git)
     have curl || pkgs+=(curl)
     have rg || pkgs+=(ripgrep)
+    have tmux || pkgs+=(tmux)
     node_available || pkgs+=(nodejs npm)
     [ "${#pkgs[@]}" -eq 0 ] && return
     if ! $CAN_ROOT; then
@@ -79,6 +80,7 @@ install_packages() {
     have git || pkgs+=(git)
     have curl || pkgs+=(curl)
     have rg || pkgs+=(ripgrep)
+    have tmux || pkgs+=(tmux)
     node_available || pkgs+=(nodejs npm)
     nvim_is_recent || pkgs+=(neovim)
     [ "${#pkgs[@]}" -eq 0 ] && return
@@ -90,13 +92,14 @@ install_packages() {
     $SUDO apk add --no-cache --quiet "${pkgs[@]}"
   elif [ "$OS" = "Darwin" ] && have brew; then
     have rg || pkgs+=(ripgrep)
+    have tmux || pkgs+=(tmux)
     node_available || pkgs+=(node)
     nvim_is_recent || pkgs+=(neovim)
     [ "${#pkgs[@]}" -eq 0 ] && return
     log "Installing ${pkgs[*]}"
     brew install "${pkgs[@]}"
   else
-    warn "unsupported package manager; ensure zsh, git, curl, ripgrep, node, and neovim >= 0.11 are installed"
+    warn "unsupported package manager; ensure zsh, git, curl, ripgrep, tmux, node, and neovim >= 0.11 are installed"
   fi
 }
 
@@ -159,6 +162,18 @@ set_default_shell() {
   fi
 }
 
+install_tmux_plugins() {
+  have tmux || { warn "tmux not found; skipping tmux plugin install"; return; }
+  local tpm="$HOME/.tmux/plugins/tpm"
+  if [ ! -d "$tpm" ]; then
+    log "Installing tmux plugin manager"
+    git clone --quiet --depth=1 https://github.com/tmux-plugins/tpm "$tpm"
+  fi
+  log "Installing tmux plugins"
+  "$tpm/bin/install_plugins" >/dev/null 2>&1 \
+    || warn "tmux plugin install reported errors; press prefix + I inside tmux"
+}
+
 install_nvim_plugins() {
   have nvim || { warn "nvim not found; skipping plugin install"; return; }
   log "Installing Neovim plugins"
@@ -174,6 +189,8 @@ ensure_profile
 link .zshrc
 link .zsh-custom
 link .config/nvim
+link .tmux.conf
 set_default_shell
+install_tmux_plugins
 install_nvim_plugins
 log "Done"

@@ -1,6 +1,14 @@
 # If you come from bash you might have to change your $PATH.
 export PATH="$HOME/.local/bin:$PATH"
 
+# In Codespaces, attach to (or create) a persistent tmux session for interactive
+# terminal logins. Skipped for VS Code's integrated terminal, non-TTY shells
+# (e.g. environment probes), nested tmux, or when NO_TMUX is set.
+if [[ -n "$CODESPACES" && -z "$TMUX" && -z "$NO_TMUX" && "$TERM_PROGRAM" != "vscode" \
+      && -o interactive && -t 0 && -t 1 ]] && command -v tmux >/dev/null 2>&1; then
+  tmux new-session -A -s main
+fi
+
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
