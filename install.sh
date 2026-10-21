@@ -170,8 +170,13 @@ install_tmux_plugins() {
     git clone --quiet --depth=1 https://github.com/tmux-plugins/tpm "$tpm"
   fi
   log "Installing tmux plugins"
-  "$tpm/bin/install_plugins" >/dev/null 2>&1 \
+  # Use a throwaway server so TPM loads this config even if another tmux server is running.
+  local sock
+  sock="$(mktemp -d)"
+  env -u TMUX TMUX_TMPDIR="$sock" "$tpm/bin/install_plugins" >/dev/null 2>&1 \
     || warn "tmux plugin install reported errors; press prefix + I inside tmux"
+  env -u TMUX TMUX_TMPDIR="$sock" tmux kill-server >/dev/null 2>&1 || true
+  rm -rf "$sock"
 }
 
 install_nvim_plugins() {
