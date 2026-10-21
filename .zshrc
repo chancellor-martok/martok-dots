@@ -1,6 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 export PATH="$HOME/.local/bin:$PATH"
 
+# Must run before tmux starts: remote hosts usually lack Ghostty's terminfo.
+if [ "$TERM" = "xterm-ghostty" ]; then
+  export TERM=xterm-256color
+fi
+
 # In Codespaces, attach to (or create) a persistent tmux session for interactive
 # terminal logins. Skipped for VS Code's integrated terminal, non-TTY shells
 # (e.g. environment probes), nested tmux, or when NO_TMUX is set.
@@ -114,10 +119,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
-if [ "$TERM" = "xterm-ghostty" ]; then
-  export TERM=xterm-256color
-fi
-
 alias vi="nvim"
 
 export DEFAULT_USER=$USER
