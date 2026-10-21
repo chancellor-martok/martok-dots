@@ -1,6 +1,12 @@
 # If you come from bash you might have to change your $PATH.
 export PATH="$HOME/.local/bin:$PATH"
 
+# github/github codespaces vendor a modern Node but only add it to PATH via VS Code's
+# remoteEnv, so SSH/tmux shells would otherwise get the image's ancient /usr/bin/node.
+if [ -d /workspaces/github/vendor/node/bin ]; then
+  export PATH="/workspaces/github/vendor/node/bin:$PATH"
+fi
+
 # Must run before tmux starts: remote hosts usually lack Ghostty's terminfo.
 if [ "$TERM" = "xterm-ghostty" ]; then
   export TERM=xterm-256color
